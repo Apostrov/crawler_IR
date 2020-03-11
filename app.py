@@ -9,7 +9,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     collection = get_collection()
-    return render_template('index.html', songs=collection) 
+    return render_template('songs.html', songs=collection) 
 
 @app.route('/song')
 def song():
@@ -18,18 +18,28 @@ def song():
     song = get_song(id)
     return render_template('song.html', song=song)
 
-@app.route('/query', methods=['GET'])
+@app.route('/query')
 def query():
-    pass
+    query = request.args.get('query')
+    if query is None:
+        return render_template('query.html')
+    else:
+        collection = get_collection()
+        songs = search_song(query, collection, invertedIndex, soundexIndex, bigramIndex)
+        return render_template('songs.html', songs=songs) 
 
 @app.route('/update', methods=['POST'])
 def upadate():
     song = add_song(request.json)
     return "Added"
 
-if __name__ == "__main__":
+def init():
     collection = get_collection()
     invertedIndex = make_invindex(collection)
     soundexIndex = make_soundex_index(collection)
     bigramIndex = make_bigram_index(collection)
+    return invertedIndex, soundexIndex, bigramIndex
+
+if __name__ == "__main__":
+    invertedIndex, soundexIndex, bigramIndex = init()
     app.run(debug=True)
