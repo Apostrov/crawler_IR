@@ -1,4 +1,5 @@
 songs/
+inverted_index/
 
 # IDE
 .vscode/

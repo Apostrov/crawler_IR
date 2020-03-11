@@ -1,6 +1,8 @@
+import os
 from flask import Flask, request, render_template
 from utils.load_songs import add_song, get_collection, get_song
-from search_engine.search import make_invindex, search_song
+from search_engine.search import search_song
+from search_engine.inverted_index import make_invertedIndex, get_invertedIndex
 from search_engine.spelling_correction import make_soundex_index
 from search_engine.wildcard_query import make_bigram_index 
 
@@ -25,6 +27,7 @@ def query():
         return render_template('query.html')
     else:
         collection = get_collection()
+        invertedIndex = get_invertedIndex()
         songs = search_song(query, collection, invertedIndex, soundexIndex, bigramIndex)
         return render_template('songs.html', songs=songs) 
 
@@ -35,11 +38,11 @@ def upadate():
 
 def init():
     collection = get_collection()
-    invertedIndex = make_invindex(collection)
+    make_invertedIndex(collection)
     soundexIndex = make_soundex_index(collection)
     bigramIndex = make_bigram_index(collection)
-    return invertedIndex, soundexIndex, bigramIndex
+    return soundexIndex, bigramIndex
 
 if __name__ == "__main__":
-    invertedIndex, soundexIndex, bigramIndex = init()
+    soundexIndex, bigramIndex = init()
     app.run(debug=True)
