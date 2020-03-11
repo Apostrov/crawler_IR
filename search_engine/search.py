@@ -1,17 +1,20 @@
 from collections import defaultdict
-from utils.text_processing import preprocess
-from utils.wildcard_query import wildcard_query
-from utils.spelling_correction import correction
+from search_engine.text_processing import preprocess
+from search_engine.wildcard_query import wildcard_query
+from search_engine.spelling_correction import correction
 
-def make_index(collection):
-    invertex_index = defaultdict(set)
+def make_invindex(collection):
+    invertedIndex = defaultdict(set)
     index = 0
     for song in collection:
         clean = preprocess(song.text)
         for word in clean:
-            invertex_index[word].add(index)
+            invertedIndex[word].add(index)
         index += 1
-    return invertex_index
+    return invertedIndex
+
+def add_to_invindex(invertedIndex):
+    pass
 
 def search(index, query):
     query = query.strip()
@@ -26,7 +29,7 @@ def addToQueries(queries, query):
     return queries
 
 def search_song(text, collection, invertedIndex, soundexIndex, bigramIndex):
-    clean = preprocess(text)
+    clean = preprocess(text, True)
     queries = []
     for token in clean:
         if '*' in token:

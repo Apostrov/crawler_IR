@@ -1,5 +1,5 @@
 from collections import defaultdict
-from utils.text_processing import preprocess
+from search_engine.text_processing import preprocess
 
 def soundex(word):
     removed = ['a', 'e', 'i', 'o', 'u', 'y']

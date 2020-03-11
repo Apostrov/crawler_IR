@@ -1,5 +1,5 @@
 import re
-from utils.text_processing import preprocess
+from search_engine.text_processing import preprocess
 
 def word_to_bigrams(word, begining=True, ending=True):
     bigrams = []
@@ -41,6 +41,9 @@ def wildcard_query(pattern, bigramIndex):
         bigrams.update(word_to_bigrams(end, begining=False))
     for part in parts:
         bigrams.update(word_to_bigrams(part, begining=False, ending=False))
+    
+    if len(bigrams) == 0 and pattern.strip() == '*':
+        return [value for values in bigramIndex.values() for value in values]
     
     words = set(bigramIndex[bigrams.pop()])
     for bigram in bigrams:
