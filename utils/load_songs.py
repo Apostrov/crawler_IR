@@ -18,6 +18,10 @@ def add_song(jsonSong):
     save_song(song)
     return song
 
+def delete_song(url):
+    path = get_path(url)
+    os.remove(path)
+
 def get_path(url):
     id = url.replace('/', '_')
     return f"{DOCFOLDER}/{id}"
