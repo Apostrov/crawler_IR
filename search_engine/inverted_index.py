@@ -15,7 +15,6 @@ def make_invertedIndex(collection):
             invertedIndex[word].add(index)
         index += 1
     
-    print(invertedIndex)
     for word in invertedIndex:
         path = join(INDEXFOLDER, word)
         pickle.dump(invertedIndex[word], open(path, "wb"))
@@ -25,7 +24,7 @@ def add_to_invertedIndex(invertedIndex):
 
 def get_invertedIndex():
     files = [f for f in listdir(INDEXFOLDER) if isfile(join(INDEXFOLDER, f))]
-    invertedIndex = {}
+    invertedIndex = defaultdict(set)
     for word in files:
         path = join(INDEXFOLDER, word)
         indexes = pickle.load(open(path, "rb"))
@@ -35,7 +34,6 @@ def get_invertedIndex():
 def search(invertedIndex, query):
     query = query.strip()
     relevant_documents = []
-    print(query)
     for word in query.split(' '):
         relevant_documents.append(invertedIndex[word])
     return list(set.intersection(*relevant_documents))
