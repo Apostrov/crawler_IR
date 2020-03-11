@@ -1,4 +1,5 @@
 import os
+import socket
 from flask import Flask, request, render_template
 from utils.load_songs import add_song, get_collection, get_song, delete_song
 from search_engine.search import search_song
@@ -14,7 +15,7 @@ def IP():
 @app.route('/')
 def index():
     collection = get_collection()
-    return render_template('songs.html', songs=collection.values()) 
+    return render_template('songs.html', songs=collection.values(), ip=IP()) 
 
 @app.route('/song')
 def song():
@@ -27,7 +28,7 @@ def song():
 def query():
     query = request.args.get('query')
     if query is None:
-        return render_template('query.html')
+        return render_template('query.html', ip=IP())
     else:
         collection = get_collection()
         invertedIndex = get_invertedIndex()

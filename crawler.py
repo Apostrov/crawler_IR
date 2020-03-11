@@ -12,7 +12,7 @@ def get_song(url=None):
     soup = BeautifulSoup(resp.read(), 'html.parser')
     song = {}
     song['url'] = resp.geturl()
-    if url == 'https://www.lyrics.com/no-lyrics.php' or '%' in url:
+    if song['url'] == 'https://www.lyrics.com/no-lyrics.php' or '+' in song['url'] or '%' in song['url']:
         raise Exception('Wrong link')
     song['title'] = soup.find(id="lyric-title-text").get_text()
     song['artist'] = soup.find('h3', class_='lyric-artist').find('a').get_text()
