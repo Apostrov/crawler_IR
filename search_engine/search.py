@@ -9,7 +9,7 @@ def addToQueries(queries, query):
     return queries
 
 def search_song(text, collection, invertedIndex, soundexIndex, bigramIndex):
-    clean = preprocess(text, True)
+    clean = preprocess(text)
     queries = []
     for token in clean:
         if '*' in token:

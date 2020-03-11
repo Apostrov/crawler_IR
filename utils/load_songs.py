@@ -35,9 +35,10 @@ def get_song(path):
 
 def get_collection():
     files =  [f for f in listdir(DOCFOLDER) if isfile(join(DOCFOLDER, f))]
-    collection = []
+    collection = {}
     for path in files:
+        url = path.replace('_', '/')
         song = get_song(path)
         if not song is None:
-            collection.append(song)
+            collection[url] = song
     return collection

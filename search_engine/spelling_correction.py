@@ -43,10 +43,15 @@ def soundex(word):
 
 def make_soundex_index(collection):
     soundexCollection = defaultdict(set)
-    for song in collection:
-        text = preprocess(song.text, True)
-        for word in text:
-            soundexCollection[soundex(word)].add(word)
+    for url in collection:
+        soundexCollection = add_to_soundex(collection[url], soundexCollection)
+
+    return soundexCollection
+
+def add_to_soundex(song, soundexCollection):
+    text = preprocess(song.text, False)
+    for word in text:
+        soundexCollection[soundex(word)].add(word)
     return soundexCollection
 
 def levenshtein_distance(word1, word2):

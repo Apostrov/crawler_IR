@@ -2,7 +2,7 @@ import requests
 import urllib.request
 from bs4 import BeautifulSoup
 
-MAXDOCKS = 5#1e6
+MAXDOCKS = 1#1e6
 ENGINGEURL = "http://127.0.0.1:5000/update"
 
 def get_song(url=None):

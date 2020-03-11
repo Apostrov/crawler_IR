@@ -8,10 +8,7 @@ nltk.download('wordnet')
 nltk.download('stopwords')
 
 def normalize(text):
-    return re.sub(r'[^A-Za-z ]+', '', text.lower())
-
-def normalizeWildCard(text):
-    return re.sub(r'[^A-Za-z *]+', ' ', text.lower())   
+    return re.sub(r'[^A-Za-z *]+', '', text.lower())
 
 def tokenize(text):
     return nltk.word_tokenize(text)
@@ -24,15 +21,11 @@ def remove_stop_word(tokens):
     stops = set(stopwords.words('english'))
     return [token for token in tokens if token not in stops]
 
-def preprocess(text, wildcard=False):
-    if wildcard:
-        normalized = normalizeWildCard(text)
-        tokens = tokenize(normalized)
-        clean = remove_stop_word(tokens)
-        return clean
-    
+def preprocess(text, lemmatize=True):
     normalized = normalize(text)
     tokens = tokenize(normalized)
+    if not lemmatize:
+        return remove_stop_word(tokens)
     lemmed = lemmatization(tokens)
     clean = remove_stop_word(lemmed)
     return clean

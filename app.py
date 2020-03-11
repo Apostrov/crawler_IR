@@ -2,16 +2,16 @@ import os
 from flask import Flask, request, render_template
 from utils.load_songs import add_song, get_collection, get_song
 from search_engine.search import search_song
-from search_engine.inverted_index import make_invertedIndex, get_invertedIndex
-from search_engine.spelling_correction import make_soundex_index
-from search_engine.wildcard_query import make_bigram_index 
+from search_engine.inverted_index import make_invertedIndex, get_invertedIndex, add_to_invertedIndex
+from search_engine.spelling_correction import make_soundex_index, add_to_soundex
+from search_engine.wildcard_query import make_bigram_index , add_to_bigram
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
     collection = get_collection()
-    return render_template('songs.html', songs=collection) 
+    return render_template('songs.html', songs=collection.values()) 
 
 @app.route('/song')
 def song():
@@ -34,7 +34,10 @@ def query():
 @app.route('/update', methods=['POST'])
 def upadate():
     song = add_song(request.json)
-    return "Added"
+    add_to_invertedIndex(song)
+    add_to_soundex(song, soundexIndex)
+    add_to_bigram(song, bigramIndex)
+    return "OK"
 
 def init():
     collection = get_collection()
