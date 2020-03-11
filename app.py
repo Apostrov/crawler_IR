@@ -8,6 +8,9 @@ from search_engine.wildcard_query import make_bigram_index , add_to_bigram
 
 app = Flask(__name__)
 
+def IP():
+    return socket.gethostbyname(socket.getfqdn())
+
 @app.route('/')
 def index():
     collection = get_collection()
@@ -18,7 +21,7 @@ def song():
     url = request.args.get('url')
     id = url.replace('/', '_')
     song = get_song(id)
-    return render_template('song.html', song=song)
+    return render_template('song.html', song=song, ip=IP())
 
 @app.route('/query')
 def query():
@@ -29,7 +32,7 @@ def query():
         collection = get_collection()
         invertedIndex = get_invertedIndex()
         songs = search_song(query, collection, invertedIndex, soundexIndex, bigramIndex)
-        return render_template('songs.html', songs=songs) 
+        return render_template('songs.html', songs=songs, ip=IP())
 
 @app.route('/update', methods=['POST', 'DELETE'])
 def upadate():
@@ -60,4 +63,4 @@ def init():
 
 if __name__ == "__main__":
     soundexIndex, bigramIndex = init()
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=80)

@@ -3,7 +3,7 @@ import urllib.request
 from bs4 import BeautifulSoup
 
 MAXDOCKS = 1e6
-ENGINGEURL = "http://127.0.0.1:5000/update"
+ENGINGEURL = "http://127.0.0.1:80/update"
 
 def get_song(url=None):
     if url is None:

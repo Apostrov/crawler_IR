@@ -1,4 +1,4 @@
-<a href="http://127.0.0.1:5000/query"><h3>Find song</h3></a>
+<a href="http://{{ ip }}/query"><h3>Find song</h3></a>
 {% for song in songs %}
-    <li><a href="http://127.0.0.1:5000/song?url={{ song.url }}">{{ song.artist }} - {{ song.title }}</a></li>
+    <li><a href="http://{{ ip }}/song?url={{ song.url }}">{{ song.artist }} - {{ song.title }}</a></li>
 {% endfor %}
