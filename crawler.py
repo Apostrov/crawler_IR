@@ -54,7 +54,7 @@ def main(docksNumber):
                 send_song(song)
                 urls.append(song['url'])
 
-            if len(urls) % 10 == 0:
+            if len(urls) % 10000 == 0:
                 urls, deadUrl = ping_url(urls)
                 for url in deadUrl:
                     delete_song(url)

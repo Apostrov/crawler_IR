@@ -1,4 +1,4 @@
-from search_engine.inverted_index import search
+from search_engine.inverted_index import search, get_invertedIndex
 from search_engine.text_processing import preprocess
 from search_engine.wildcard_query import wildcard_query
 from search_engine.spelling_correction import correction
@@ -8,7 +8,7 @@ def addToQueries(queries, query):
         queries[index] += ' ' + query
     return queries
 
-def search_song(text, collection, invertedIndex, soundexIndex, bigramIndex):
+def search_song(text, collection, soundexIndex, bigramIndex):
     clean = preprocess(text)
     queries = []
     for token in clean:
@@ -16,7 +16,7 @@ def search_song(text, collection, invertedIndex, soundexIndex, bigramIndex):
             wildcard = wildcard_query(token, bigramIndex)
             if len(wildcard) > 0:
                 queries.append(wildcard)
-        elif token not in invertedIndex:
+        elif len(get_invertedIndex(token)) == 0:
             corrected = correction(token, soundexIndex)
             if len(corrected) > 0:
                 queries.append(corrected)
@@ -35,6 +35,6 @@ def search_song(text, collection, invertedIndex, soundexIndex, bigramIndex):
 
     relevantsIndex = set()
     for query in processedQueries:
-        relevantsIndex.update(search(invertedIndex, query))
+        relevantsIndex.update(search(query))
    
     return [collection[index] for index in relevantsIndex]

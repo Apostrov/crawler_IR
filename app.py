@@ -31,12 +31,11 @@ def query():
         return render_template('query.html', ip=IP())
     else:
         collection = get_collection()
-        invertedIndex = get_invertedIndex()
-        songs = search_song(query, collection, invertedIndex, soundexIndex, bigramIndex)
+        songs = search_song(query, collection, soundexIndex, bigramIndex)
         return render_template('songs.html', songs=songs, ip=IP())
 
 @app.route('/update', methods=['POST', 'DELETE'])
-def upadate():
+def update():
     if request.method == 'POST':
         song = add_song(request.json)
         add_to_invertedIndex(song)
@@ -64,4 +63,4 @@ def init():
 
 if __name__ == "__main__":
     soundexIndex, bigramIndex = init()
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0')

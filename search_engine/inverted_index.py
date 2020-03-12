@@ -48,20 +48,18 @@ def delete_from_invertedIndex(url):
         remove(path)
     
     save_invertedIndex(invertedIndex)
-    
 
-def get_invertedIndex():
-    files = [f for f in listdir(INDEXFOLDER) if isfile(join(INDEXFOLDER, f))]
-    invertedIndex = defaultdict(set)
-    for word in files:
-        path = join(INDEXFOLDER, word)
-        indexes = pickle.load(open(path, "rb"))
-        invertedIndex[word] = indexes
-    return invertedIndex
+def get_invertedIndex(word):
+    if len(word.strip()) == 0:
+        return set()
+    path = join(INDEXFOLDER, word)
+    if exists(path):
+        return pickle.load(open(path, "rb"))
+    return set()
 
-def search(invertedIndex, query):
+def search(query):
     query = query.strip()
     relevant_documents = []
     for word in query.split(' '):
-        relevant_documents.append(invertedIndex[word])
+        relevant_documents.append(get_invertedIndex(word))
     return list(set.intersection(*relevant_documents))
